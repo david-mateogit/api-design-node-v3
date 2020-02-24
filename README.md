@@ -1,76 +1,56 @@
-# API design in Node.js with Express, v3
-> Scott Moss & Frontend Masters
+# API in Node.js
 
-- [Resources](#resources)
-- [Course](#course)
-- [Exercises](#excercises)
-  - [Hello world Express](#hello-world-express)
-  - [Routing](#routing)
-  - [Create Schemas](#create-schemas)
-  - [Controllers](#controllers)
-  - [Authentication](#authentication)
-  - [Testing](#testing)
+Following Scott Moss' course on Frontend Masters, here is a REST API sample with MongoDB and Express.
+[API Design in Node V3](https://frontendmasters.com/workshops/api-design-node-v3/)
 
-## Resources
-* [Slides](https://slides.com/scotups/api-design-in-node-with-express-v3/)
-* [Nodejs](https://nodejs.org/en/)
-* [Express](https://expressjs.com/)
-* [MongoDB](https://www.mongodb.com/)
+Some important concepts:
 
-## Course
-This course has two parts, slides and excercises. The slides describe the excerices in detail. Each excercise has a starting branch and solution branch. Example `lesson-1` and `lesson-1-solution`.
-## Exercises
-### Hello world Express
-* branch - `lesson-1`
+### API
 
-In this lesson you'll be creating a simple Express based API in node, just to get your feet wet.
-- [ ] install dependencies with yarn (prefered for version locking) or npm
-- [ ] create a route that sends back some json
-- [ ] create a route that accepts json and logs it
-- [ ] start the server
+- **A**pplication **P**rogramming **I**nterface.
+- Mandate how data can be interacted with.
+- Able to perform CRUD operations.
 
-### Routing
-* branch - `lesson-2`
-* test command - `yarn test-routes` or `npm run test-routes`
+### REST
 
-This exercise will have you creating routes and sub routers for our soon the be DB resources using Express routing and routers
-- [ ] create a router for the Item resource
-- [ ] create full crud routes and create placeholder controllers
-- [ ] mount router on the root server
-- [ ] ensure all tests pass by running test command
+- The combination of DB resources, route paths, and HTTP verbs.
 
-### Create Schemas
-* branch - `lesson-3`
-* test command - `yarn test-models` or `npm run test-models`
+### MIDDLEWARE
 
-In this exercise, you'll be taking what you learned about Mongoose and MongoDb to create a schema and model for the Item resource.
+- List of functions that execute, in order, before your controllers. eg: router.get('/', **[middleware]**, controller).
+- Great for authenticating, transforming the request, tracking and error handling.
 
-- [ ] create a schema for the item resource
-- [ ] add the correct fields (look at test)
-- [ ] add the correct validations (look at test)
-- [ ] *extra* add compund index to ensure all tasks in a list have unique names
-- [ ] ensure all tests pass by running test command
+### MongoDB and Schemas
+
+- MongoDb allows to create models for each REST resource we want to expose via the API.
+- Schemas are instructions for the models.
+- Models are objects that let us interact with MongoDB.- Models enforce the instructions on the schemas.
+- Model represent the REST resources.
 
 ### Controllers
-* branch - `lesson-4`
-* test command - `yarn test-controllers` or `npm run test-controllers`
 
-So far we have routes and models. Now we need to hook our routes up to our models so we can perfom CRUD on the models based on the routes + verbs. That's exactly what controllers do.
+- Controllers handle what a Route + Verb combo can access from the DB. eg: router.get('/', **(req, res) =>{}** ).
+- They are the final middleware.
+- Implement logic to interact with DB models.
 
-- [ ] create CRUD resolvers in `utils/crud.js`
-- [ ] create controllers for the Item resources using the base crud resolvers
-- [ ] ensure all tests pass by running test command
+### Models
+
+With our controllers we can use CRUD operations on our models.
+
+- C - model.create().
+- R - model.find(), model.findById().
+- U - model.update(), model.findByIdAndUpdate().
+- D - model.remove(), model.findByIdAndRemove().
 
 ### Authentication
-* branch - `lesson-5`
-* test command - `yarn test-auth` or `npm run test-auth`
 
-In this exercise you'll be locking down our API using JWT's.
+- When we authenticate, we control if an incoming request can proceed or not. **Identify** first.
+- Authorization is controlling if an authenticated request has the correct **permissions** to access a resource.
 
-- [ ] create a signup controller
-- [ ] create a signin controller
-- [ ] create a protect middlware to lock down API routes
-- [ ] ensure all tests pass by running test command
+### JWT authentication
 
-### Testing
-THe other resources don't have any test, go ahead and write some!
+- Tokens passed on every request to check authorization on the server.
+- A bearer token strategy that allows the API to be stateless with the user auth.
+- Created by a combo of secrets on the API and a payload.
+- Must be sent on every request for the API to verify the token was created with the expected secrets.
+- After verification, the JWT payload is accessible to the server and can be used to authorization and identification.

@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
 const itemSchema = new mongoose.Schema(
   {
@@ -11,25 +11,25 @@ const itemSchema = new mongoose.Schema(
     status: {
       type: String,
       required: true,
-      enum: ['active', 'complete', 'pastdue'],
-      default: 'active'
+      enum: ["active", "complete", "pastdue"],
+      default: "active"
     },
     notes: String,
     due: Date,
     createdBy: {
       type: mongoose.SchemaTypes.ObjectId,
-      ref: 'user',
+      ref: "user",
       required: true
     },
     list: {
       type: mongoose.SchemaTypes.ObjectId,
-      ref: 'list',
+      ref: "list",
       required: true
     }
   },
   { timestamps: true }
-)
+);
 
-itemSchema.index({ list: 1, name: 1 }, { unique: true })
+itemSchema.index({ list: 1, name: 1 }, { unique: true });
 
-export const Item = mongoose.model('item', itemSchema)
+export const Item = mongoose.model("item", itemSchema);
